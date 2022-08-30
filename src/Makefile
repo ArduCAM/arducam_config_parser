@@ -13,6 +13,7 @@ DEPS		= ini.h arducam_config_parser.h
 _OBJ		= ini.o arducam_config_parser.o
 OBJ 		= $(patsubst %,$(ODIR)/%,$(_OBJ))
 
+DESTDIR     ?=
 
 $(ODIR)/%.o: %.c $(DEPS)
 	@mkdir -p $(@D)
@@ -23,7 +24,7 @@ all:libarducam_config_parser.so libarducam_config_parser.a
 libarducam_config_parser.so:  $(OBJ)
 	@mkdir -p $(LDIR)
 	$(CC) -shared -o $(LDIR)/$@ $^ $(LIBS) $(CFLAGS)
-	
+
 libarducam_config_parser.a: $(OBJ)
 	ar cr $(LDIR)/$@  -o $^
 
@@ -36,11 +37,12 @@ clean:
 .PHONY:install
 
 install:
-	sudo install -m 644 $(LDIR)/libarducam_config_parser.so /usr/lib/
-	sudo install -m 444 arducam_config_parser.h /usr/include/
+	mkdir -p $(DESTDIR)/usr/lib $(DESTDIR)/usr/include
+	install -m 0644 $(LDIR)/lib*.so* $(DESTDIR)/usr/lib/
+	install -m 0644 arducam_config_parser.h $(DESTDIR)/usr/include/
 
 .PHONY:uninstall
 
 uninstall:
-	sudo rm /usr/lib/libarducam_config_parser.so
-	sudo rm /usr/include/arducam_config_parser.h
+	rm $(DESTDIR)/usr/lib/libarducam_config_parser.so
+	rm $(DESTDIR)/usr/include/arducam_config_parser.h
