@@ -1,3 +1,9 @@
+arducam-config-parser-dev (0.1.2) groovy; urgency=medium
+
+  * Increase max line length.
+
+ -- Arducam <support@arducam.com>  Tue, 14 May 2024 17:06:18 +0800
+
 arducam-config-parser-dev (0.1.1-1) groovy; urgency=medium
 
   * support armv6
