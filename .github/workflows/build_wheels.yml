@@ -15,7 +15,7 @@ jobs:
     strategy:
       # Ensure that a wheel builder finishes even if another fails
       matrix:
-        os: [windows-latest, ubuntu-latest]
+        os: [windows-2019, ubuntu-latest]
 
     steps:
       - uses: actions/checkout@v2
@@ -32,7 +32,7 @@ jobs:
           && python setup.py sdist -d ./wheelhouse
 
       - name: Add MSBuild to PATH
-        if: ${{ matrix.os == 'windows-latest' }}
+        if: ${{ matrix.os == 'windows-2019' }}
         uses: microsoft/setup-msbuild@v1.0.2
 
       - name: build x86_64 so
@@ -48,24 +48,24 @@ jobs:
           && python setup.py bdist_wheel --universal -p manylinux2014_x86_64 -d ./wheelhouse
 
       - name: Build x86 dll
-        if: ${{ matrix.os == 'windows-latest' }}
+        if: ${{ matrix.os == 'windows-2019' }}
         run: cd msvc
           && msbuild arducam_config_parser.sln /m /t:Rebuild /p:Configuration=Release /p:Platform=x86
           && cp ../bin/win32/Release/*.dll ../Python/arducam_config_parser/
 
       - name: Build x86 wheels
-        if: ${{ matrix.os == 'windows-latest' }}
+        if: ${{ matrix.os == 'windows-2019' }}
         run: cd Python
           && python setup.py bdist_wheel --universal -p win32 -d ./wheelhouse
 
       - name: Build x64 dll
-        if: ${{ matrix.os == 'windows-latest' }}
+        if: ${{ matrix.os == 'windows-2019' }}
         run: cd msvc
           && msbuild arducam_config_parser.sln /m /t:Rebuild /p:Configuration=Release /p:Platform=x64
           && cp ../bin/x64/Release/*.dll ../Python/arducam_config_parser/
 
       - name: Build x64 wheels
-        if: ${{ matrix.os == 'windows-latest' }}
+        if: ${{ matrix.os == 'windows-2019' }}
         run: cd Python
           && python setup.py bdist_wheel --universal -p win_amd64 -d ./wheelhouse
 
